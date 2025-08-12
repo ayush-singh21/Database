@@ -84,3 +84,16 @@ if __name__ == "__main__":
     descrip = ai_description()
     weakness = search()
     database()
+
+
+
+# from flask import Flask
+# import sqlite3
+
+# app = Flask(__name__)
+# @app.route("/")
+
+# def index():
+#     return("Hello world!")
+
+# app.run(debug=True)
