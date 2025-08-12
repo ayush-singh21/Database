@@ -82,15 +82,37 @@ def save_to_database(control, ai_description, weakness_description):
 @app.route('/')
 def index():
     """Main page"""
-    if df is None:
-        if not load_data():
-            return render_template('error.html', 
-                                 error="Could not load data file. Please check if ./Spreadsheet/ProjectTeamDescriptions.xlsx exists.")
+    return render_template('index.html')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    """Handle LLM chat requests"""
+    question = request.form.get('question')
     
-    # Get list of controls for the dropdown
-    controls_list = df.iloc[:, 1].unique().tolist() if df is not None else []
+    if not question:
+        return render_template('index.html', error="Please enter a question.")
     
-    return render_template('index.html', controls=controls_list)
+    try:
+        API = os.getenv("AI_API_KEY")
+        if not API:
+            return render_template('index.html', 
+                                 question=question,
+                                 error="AI API key not found. Please check your environment variables.")
+        
+        client = genai.Client(api_key=API)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash", 
+            contents=question
+        )
+        
+        return render_template('index.html', 
+                             question=question,
+                             response=response.text)
+        
+    except Exception as e:
+        return render_template('index.html', 
+                             question=question,
+                             error=f"Error getting AI response: {e}")
 
 @app.route('/search', methods=['POST'])
 def search():

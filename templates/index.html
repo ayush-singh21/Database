@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+
+{% block title %}LLM Chat - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Ask the AI Anything</h3>
+            </div>
+            <div class="card-body">
+                <form action="/chat" method="POST">
+                    <div class="mb-3">
+                        <label for="question" class="form-label">Your Question:</label>
+                        <textarea class="form-control" id="question" name="question" rows="4" 
+                                placeholder="Type your question here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ask AI</button>
+                </form>
+            </div>
+        </div>
+        
+        {% if response %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">AI Response</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Your Question:</strong> {{ question }}</p>
+                <hr>
+                <p><strong>AI Answer:</strong></p>
+                <div class="bg-light p-3 rounded">{{ response }}</div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="alert alert-danger mt-4" role="alert">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
