@@ -1,45 +1,107 @@
 {% extends "template.html" %}
 
-{% block title %}LLM Chat - Home{% endblock %}
+{% block title %}FedRAMP Control Assistant - Search{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h3 class="mb-0">Ask the AI Anything</h3>
+                <h3 class="mb-0">FedRAMP Control Search</h3>
+                <small class="text-muted">Get simple explanations of FedRAMP security controls</small>
             </div>
             <div class="card-body">
-                <form action="/chat" method="POST">
+                <form action="/search" method="POST">
                     <div class="mb-3">
-                        <label for="question" class="form-label">Your Question:</label>
-                        <textarea class="form-control" id="question" name="question" rows="4" 
-                                placeholder="Type your question here..." required></textarea>
+                        <label for="control_dropdown" class="form-label">Select a Control:</label>
+                        <select class="form-select" id="control_dropdown" name="control">
+                            <option value="">Choose from available controls...</option>
+                            {% for control in controls %}
+                                <option value="{{ control }}">{{ control }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Ask AI</button>
+                    
+                    <div class="text-center my-3">
+                        <span class="text-muted">OR</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="manual_control" class="form-label">Enter Control Manually:</label>
+                        <input type="text" class="form-control" id="manual_control" name="control" 
+                               placeholder="e.g., AC-1, CP-2, IA-1">
+                        <div class="form-text">Enter any FedRAMP control identifier</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Search</button>
                 </form>
             </div>
         </div>
-        
-        {% if response %}
+
+        <!-- Available Controls -->
+        {% if controls|length > 0 %}
         <div class="card mt-4">
             <div class="card-header">
-                <h5 class="mb-0">AI Response</h5>
+                <h5 class="mb-0">Available Controls</h5>
             </div>
             <div class="card-body">
-                <p><strong>Your Question:</strong> {{ question }}</p>
-                <hr>
-                <p><strong>AI Answer:</strong></p>
-                <div class="bg-light p-3 rounded">{{ response }}</div>
+                <div class="d-flex flex-wrap">
+                    {% for control in controls[:15] %}
+                        <span class="badge bg-secondary me-2 mb-2" 
+                              style="cursor: pointer;" 
+                              onclick="selectControl('{{ control }}')">
+                            {{ control }}
+                        </span>
+                    {% endfor %}
+                </div>
+                {% if controls|length > 15 %}
+                    <p class="text-muted mt-2 mb-0">
+                        <small>Showing first 15 of {{ controls|length }} controls</small>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- AI Response -->
+        {% if ai_response %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0">Explanation: {{ searched_control }}</h4>
+            </div>
+            <div class="card-body">
+                <p>{{ ai_response }}</p>
             </div>
         </div>
         {% endif %}
         
+        <!-- Error Display -->
         {% if error %}
-        <div class="alert alert-danger mt-4" role="alert">
+        <div class="alert alert-danger mt-4">
             <strong>Error:</strong> {{ error }}
         </div>
         {% endif %}
     </div>
 </div>
+
+<script>
+// Clear the other input when one is used
+document.getElementById('control_dropdown').addEventListener('change', function() {
+    if (this.value) {
+        document.getElementById('manual_control').value = '';
+    }
+});
+
+document.getElementById('manual_control').addEventListener('input', function() {
+    if (this.value) {
+        document.getElementById('control_dropdown').value = '';
+    }
+});
+
+// Function to select control from badge
+function selectControl(controlName) {
+    document.getElementById('control_dropdown').value = controlName;
+    document.getElementById('manual_control').value = '';
+}
+</script>
 {% endblock %}
