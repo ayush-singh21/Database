@@ -28,10 +28,19 @@
                     
                     <div class="mb-3">
                         <label for="manual_control" class="form-label">Enter Control Manually:</label>
-                        <input type="text" class="form-control" id="manual_control" name="control" 
+                        <input type="text" class="form-control" id="manual_control" name="manual_control" 
                                value="{{ manual_control or '' }}"
                                placeholder="e.g., AC-1, CP-2, IA-1">
                         <div class="form-text">Enter any FedRAMP control identifier</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="remediation_steps" class="form-label">Would you like to see remediation steps?</label>
+                        <select class="form-select" id="remediation_steps" name="remediation_steps">
+                            <option value="">Choose Yes or No</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Search</button>

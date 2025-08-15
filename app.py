@@ -30,7 +30,7 @@ def get_controls_list():
         return df.iloc[:, 1].unique().tolist()
     return []
 
-def get_ai_description(control):
+def get_ai_description(control, yes_no):
     """Get AI description of the control"""
     try:
         API = os.getenv("AI_API_KEY")
@@ -40,7 +40,7 @@ def get_ai_description(control):
         client = genai.Client(api_key=API)
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents=f"Explain this FedRAMP control {control} in a short and simple way for a non technical user"
+            contents=f"Explain this FedRAMP control {control} in a short and simple way for a non technical user.In a new paragraph, give possible remediation efforts for this control only if the following says Yes: {yes_no}"
         )
         return response.text
     except Exception as e:
@@ -87,14 +87,19 @@ def index():
 def search():
     """Handle search requests"""
     control = request.form.get('control')
-    
+    print(control)
     if not control:
+        control = request.form.get('manual_control')
+        print(f'manual: {control}')
+    
+    if control is None:
         return render_template('index.html', 
                              controls=get_controls_list(),
                              error="Please select or enter a control name")
-    
+    yes_no = request.form.get('remediation_steps')
+
     # Get AI description
-    ai_description = get_ai_description(control)
+    ai_description = get_ai_description(control, yes_no)
     
     # Save to database
     save_to_database(control, ai_description)
