@@ -38,9 +38,15 @@ def get_ai_description(control, yes_no):
             return "AI API key not found. Please check your environment variables."
         
         client = genai.Client(api_key=API)
+        if yes_no == "Yes":
+            contents = f"Explain this FedRAMP control {control} in a short and simple way for a non technical user.In a new paragraph, give possible remediation efforts for this control"
+            print("Include Remediation Steps")
+        else:
+            contents = f"Explain this FedRAMP control {control} in a short and simple way for a non technical user"
+            print("No Remediation Steps")
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents=f"Explain this FedRAMP control {control} in a short and simple way for a non technical user.In a new paragraph, give possible remediation efforts for this control only if the following says Yes: {yes_no}"
+            contents = contents
         )
         return response.text
     except Exception as e:
@@ -97,6 +103,7 @@ def search():
                              controls=get_controls_list(),
                              error="Please select or enter a control name")
     yes_no = request.form.get('remediation_steps')
+    print(yes_no)
 
     # Get AI description
     ai_description = get_ai_description(control, yes_no)

@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c27048b-4b87-4ae0-b48c-770e05fbbb7d" name="Changes" comment="Added templates and explanation">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="0c27048b-4b87-4ae0-b48c-770e05fbbb7d" name="Changes" comment="Added templates and explanation" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,7 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755015129662</updated>
       <workItem from="1755015130808" duration="2548000" />
-      <workItem from="1755275257052" duration="818000" />
+      <workItem from="1755275257052" duration="2898000" />
     </task>
     <task id="LOCAL-00001" summary="Added templates and explanation">
       <option name="closed" value="true" />
