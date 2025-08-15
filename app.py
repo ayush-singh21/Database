@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from google import genai
 import sqlite3
+import markdown
 
 app = Flask(__name__)
 
@@ -48,7 +49,9 @@ def get_ai_description(control, yes_no):
             model="gemini-2.5-flash", 
             contents = contents
         )
-        return response.text
+        response = response.text
+        parsed_response = markdown.markdown(response)
+        return parsed_response
     except Exception as e:
         return f"Error getting AI description: {e}"
 
@@ -66,8 +69,8 @@ def save_to_database(control, ai_description):
                 )""")
         
         # Insert data
-        cursor.execute("INSERT INTO requests VALUES (?,?)", 
-                      (control, ai_description))
+        cursor.execute("INSERT INTO requests VALUES (?,?,?)", 
+                      (control, ai_description, "test"))
         
         conn.commit()
         conn.close()
