@@ -48,30 +48,6 @@
             </div>
         </div>
 
-        <!-- Available Controls -->
-        {% if controls|length > 0 %}
-        <div class="card mt-4">
-            <div class="card-header">
-                <h5 class="mb-0">Available Controls</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-wrap">
-                    {% for control in controls[:15] %}
-                        <span class="badge bg-secondary me-2 mb-2" 
-                              style="cursor: pointer;" 
-                              onclick="selectControl('{{ control }}')">
-                            {{ control }}
-                        </span>
-                    {% endfor %}
-                </div>
-                {% if controls|length > 15 %}
-                    <p class="text-muted mt-2 mb-0">
-                        <small>Showing first 15 of {{ controls|length }} controls</small>
-                    </p>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
 
         <!-- AI Response -->
         {% if ai_response %}
@@ -80,7 +56,7 @@
                 <h4 class="mb-0">Explanation: {{ searched_control }}</h4>
             </div>
             <div class="card-body">
-                <p>{{ ai_response }}</p>
+                <div>{{ ai_response|safe }}</div>
             </div>
         </div>
         {% endif %}

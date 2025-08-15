@@ -17,7 +17,7 @@ df = None
 def load_data():
     """Load the Excel file into a dataframe"""
     global df
-    file_path = "./Spreadsheet/ProjectTeamDescriptions.xlsx"
+    file_path = "./Spreadsheet/FedRAMP_controls_list.xlsx"
     try:
         df = pd.read_excel(file_path)
         return True
