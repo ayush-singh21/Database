@@ -29,6 +29,7 @@
                     <div class="mb-3">
                         <label for="manual_control" class="form-label">Enter Control Manually:</label>
                         <input type="text" class="form-control" id="manual_control" name="control" 
+                               value="{{ manual_control or '' }}"
                                placeholder="e.g., AC-1, CP-2, IA-1">
                         <div class="form-text">Enter any FedRAMP control identifier</div>
                     </div>
